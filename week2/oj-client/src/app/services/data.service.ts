@@ -1,16 +1,21 @@
 import { PROBLEMS } from '../mock-problems';
 import { Problem } from '../models/problem.model';
 import { Injectable } from '@angular/core';
+import { Http, Response, Headers } from '@angular/http'
+import 'rxjs/add/operator/toPromise'
 
 @Injectable()
 export class DataService {
 
-  problems: Problem[] = PROBLEMS;
-
-  constructor() { }
+  constructor(private http: Http) { }
 
   getProblems(): Problem[] {
-    return this.problems;
+    this.http.get("api/v1/problems")
+      .toPromise()
+      .then(res: Response) => {
+        this.problemSource.asObservable();
+      }
+
   }
 
   getProblem(id: number): Problem {
